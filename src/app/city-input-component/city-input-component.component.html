@@ -1,0 +1,5 @@
+<form (ngSubmit)="onSubmit(form)" #form="ngForm">
+  <label for="cityName">Enter city name:</label>
+  <input id="cityName" type="text" ngModel name="cityName" required>
+  <button [disabled]="!form.valid" type="submit">Get Weather</button>
+</form>
