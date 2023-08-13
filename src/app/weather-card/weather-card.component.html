@@ -1,4 +1,4 @@
-<div style="min-width: 250px; border:  1px solid grey; padding: 1rem" [ngStyle]="{'maxWidth': maxWidth}" *ngIf="weather">
+<div class="wrapper" [ngStyle]="{'maxWidth': maxWidth}" *ngIf="weather">
   <div style="display: flex">{{weather.dt * 1000 | date:"dd/MM/YYYY - HH:MM"}}</div>
   <div>{{weather.weather[0].main}}, {{weather.weather[0].description}}</div>
   <div style="display: flex; justify-content: space-evenly; flex-wrap: wrap; max-width: 500px; gap:1rem">

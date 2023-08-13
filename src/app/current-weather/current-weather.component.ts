@@ -28,7 +28,6 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   SubscribeToCurrentWeather(): void {
     this.FetchWeatherService.currentWeatherSubject$.subscribe((response: WeatherResponse) => {
       this.weather = response;
-      console.log(this.weather);
     })
   }
 
@@ -36,7 +35,15 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
     this.FavoriteCitiesService.AddCityToList(cityName)
   }
 
-  CheckIsCityAlreadyInFavoriteList(cityName: string): boolean{
+  CheckIsCityAlreadyInFavoriteList(cityName: string): boolean {
     return this.FavoriteCitiesService.listOfFavoriteCities.includes(cityName);
+  }
+
+  MakeAnAPICall(cityName: string) {
+    this.FetchWeatherService.FetchWeatherData(cityName, true)
+  }
+
+  IsCashedDateUsed(): boolean{
+    return this.FetchWeatherService.isCachedDataUsed;
   }
 }

@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {WeatherResponse} from "./WeatherResponse";
-import {catchError, Subject} from "rxjs";
+import {catchError, combineLatest, Subject} from "rxjs";
 import {ForecastResponse} from "./ForecastResponse";
 import {ErrorResponse} from "./ErrorResponse";
+import {CacheData, CacheService} from "./cache.service";
 
 class WeatherParams {
   urlBase: string = 'https://api.openweathermap.org/data/2.5/';
@@ -28,6 +29,7 @@ class WeatherParams {
   providedIn: 'root'
 })
 export class FetchWeatherService {
+  isCachedDataUsed: boolean = false;
 
   currentWeatherSubject$: Subject<WeatherResponse> = new Subject<WeatherResponse>();
   currentWeatherErrorSubject$: Subject<ErrorResponse> = new Subject<ErrorResponse>();
@@ -35,10 +37,27 @@ export class FetchWeatherService {
   forecastWeatherSubject$: Subject<ForecastResponse> = new Subject<ForecastResponse>();
   forecastWeatherErrorSubject$: Subject<ErrorResponse> = new Subject<ErrorResponse>();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private CacheService: CacheService) {
+    this.SaveDataToLS()
   }
 
-  FetchWeatherData(cityName: string) {
+  FetchWeatherData(cityName: string, noCashData: boolean = false) {
+    this.isCachedDataUsed = false;
+    if (noCashData) {
+      this.MakeAnAPICall(cityName);
+      return;
+    }
+    const cachedData: CacheData | null = this.CacheService.GetCityDataFromLS(cityName);
+    if (cachedData) {
+      this.isCachedDataUsed = true;
+      this.currentWeatherSubject$.next(cachedData.weatherResponse);
+      this.forecastWeatherSubject$.next(cachedData.forecastResponse);
+    } else {
+      this.MakeAnAPICall(cityName);
+    }
+  }
+
+  MakeAnAPICall(cityName: string) {
     this.FetchCurrentWeather(cityName);
     this.FetchForecast(cityName);
   }
@@ -53,7 +72,7 @@ export class FetchWeatherService {
       }
     }).pipe(
       catchError((error: ErrorResponse) => {
-        this.currentWeatherSubject$.error(error)
+        this.currentWeatherErrorSubject$.next(error)
         throw error;
       })
     ).subscribe((response: WeatherResponse) => {
@@ -81,6 +100,20 @@ export class FetchWeatherService {
 
   GetApiKey(): string {
     return '810bdf7b4af51ef14bde52c10f7c1a39';
+  }
+
+  SaveDataToLS() {
+    combineLatest(
+      [
+        this.currentWeatherSubject$,
+        this.forecastWeatherSubject$
+      ]).subscribe(
+      (response: [WeatherResponse, ForecastResponse]) => {
+        this.CacheService.SaveDataToLS(
+          response[0].name,
+          {weatherResponse: response[0], forecastResponse: response[1], dateOfRecord: new Date})
+      }
+    )
   }
 
 }
