@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FetchWeatherService} from "../fetch-weather.service";
 import {ForecastResponse} from "../ForecastResponse";
 import {Subscription} from "rxjs";
-import {WeatherResponse} from "../WeatherResponse";
 
 @Component({
   selector: 'app-forecast-weather',
