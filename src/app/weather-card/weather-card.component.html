@@ -1,27 +1,34 @@
-<div class="wrapper" [ngStyle]="{'maxWidth': maxWidth}" *ngIf="weather">
-  <div style="display: flex">{{weather.dt * 1000 | date:"dd/MM/YYYY - HH:MM"}}</div>
-  <div>{{weather.weather[0].main}}, {{weather.weather[0].description}}</div>
-  <div style="display: flex; justify-content: space-evenly; flex-wrap: wrap; max-width: 500px; gap:1rem">
-    <mat-card style="width: 100%">
-      <mat-card-title>
-        Main
-      </mat-card-title>
-      <div>
-        Temperature: {{weather.main.temp}}℃ (Feels like: {{weather.main.feels_like}}℃)
-      </div>
-      <div>
-        Pressure: {{weather.main.pressure}}hPa
-      </div>
-      <div>
-        Humidity: {{weather.main.humidity}}%
-      </div>
-    </mat-card>
-    <mat-card style="width: 100%">
-      <mat-card-title>
-        Wind
-      </mat-card-title>
-      <div>Direction: {{weather.wind.deg}}</div>
-      <div>Speed: {{weather.wind.speed}}m/s</div>
-    </mat-card>
-  </div>
+<div class="wrapper" *ngIf="weather">
+    <div style="display: flex">{{weather.dt * 1000 | date:"dd/MM/YYYY - HH:MM"}}</div>
+    <div>{{weather.weather[0].main}}, {{weather.weather[0].description}}</div>
+    <div style="display: flex; justify-content: space-evenly; flex-wrap: wrap; max-width: 500px; gap:1rem">
+        <mat-card style="width: 100%">
+            <mat-card-title>
+                Main
+            </mat-card-title>
+            <ng-container *ngIf="mode === 'current'">
+                <div>
+                    Temperature: {{weather.main.temp}}℃ (Feels like: {{weather.main.feels_like}}℃)
+                </div>
+                <div>
+                    Pressure: {{weather.main.pressure}}hPa
+                </div>
+                <div>
+                    Humidity: {{weather.main.humidity}}%
+                </div>
+            </ng-container>
+            <ng-container *ngIf="mode === 'forecast'">
+                <div>Low temperature: {{weather.main.temp_min}}</div>
+                <div>Temperature: {{weather.main.temp}}</div>
+                <div>High temperature: {{weather.main.temp_max}}</div>
+            </ng-container>
+        </mat-card>
+        <mat-card style="width: 100%">
+            <mat-card-title>
+                Wind
+            </mat-card-title>
+            <app-wind [windDirection]="weather.wind.deg + 180 - 360"></app-wind>
+            <div>Direction: {{weather.wind.deg}}°, Speed: {{weather.wind.speed}}m/s</div>
+        </mat-card>
+    </div>
 </div>

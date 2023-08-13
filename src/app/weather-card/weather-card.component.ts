@@ -9,7 +9,7 @@ import {ForecastListItem} from "../ForecastListItem";
 })
 export class WeatherCardComponent implements OnInit {
   @Input() weather: WeatherResponse | ForecastListItem | null = null;
-  @Input() maxWidth: string | null = null;
+  @Input() mode: 'current'|'forecast' = 'current';
 
   constructor() {
   }

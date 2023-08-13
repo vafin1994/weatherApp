@@ -2,7 +2,7 @@
   <h1 style="margin: 0">Forecast for next 5 days</h1>
   <mat-card class="forecast-wrapper">
     <div *ngFor="let item of weatherForecast.list">
-      <app-weather-card maxWidth="250px" [weather]="item"></app-weather-card>
+      <app-weather-card mode="forecast" [weather]="item"></app-weather-card>
     </div>
   </mat-card>
 </div>

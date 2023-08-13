@@ -17,6 +17,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatMenuModule} from "@angular/material/menu";
+import { WindComponent } from './weather-card/wind/wind.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {MatMenuModule} from "@angular/material/menu";
     CityInputComponentComponent,
     CurrentWeatherComponent,
     ForecastWeatherComponent,
-    WeatherCardComponent
+    WeatherCardComponent,
+    WindComponent
   ],
   imports: [
     BrowserModule,
