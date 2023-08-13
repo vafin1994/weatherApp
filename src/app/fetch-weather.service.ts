@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {WeatherResponse} from "./WeatherResponse";
 import {catchError, combineLatest, Subject} from "rxjs";
 import {ForecastResponse} from "./ForecastResponse";
@@ -32,10 +32,8 @@ export class FetchWeatherService {
   isCachedDataUsed: boolean = false;
 
   currentWeatherSubject$: Subject<WeatherResponse> = new Subject<WeatherResponse>();
-  currentWeatherErrorSubject$: Subject<ErrorResponse> = new Subject<ErrorResponse>();
-
   forecastWeatherSubject$: Subject<ForecastResponse> = new Subject<ForecastResponse>();
-  forecastWeatherErrorSubject$: Subject<ErrorResponse> = new Subject<ErrorResponse>();
+  error: ErrorResponse | null = null;
 
   constructor(private http: HttpClient, private CacheService: CacheService) {
     this.SaveDataToLS()
@@ -58,6 +56,7 @@ export class FetchWeatherService {
   }
 
   MakeAnAPICall(cityName: string) {
+    this.error = null;
     this.FetchCurrentWeather(cityName);
     this.FetchForecast(cityName);
   }
@@ -71,8 +70,8 @@ export class FetchWeatherService {
         units: weatherParams.units
       }
     }).pipe(
-      catchError((error: ErrorResponse) => {
-        this.currentWeatherErrorSubject$.next(error)
+      catchError((error: HttpErrorResponse) => {
+        this.error = error.error;
         throw error;
       })
     ).subscribe((response: WeatherResponse) => {
@@ -89,8 +88,8 @@ export class FetchWeatherService {
         units: weatherParams.units
       }
     }).pipe(
-      catchError((error: ErrorResponse) => {
-        this.forecastWeatherErrorSubject$.next(error);
+      catchError((error: HttpErrorResponse) => {
+        this.error = error.error;
         throw error;
       })
     ).subscribe((response: ForecastResponse) => {

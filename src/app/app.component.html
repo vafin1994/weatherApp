@@ -10,7 +10,15 @@
 </mat-toolbar>
 <div class="app-wrapper">
   <app-city-input-component></app-city-input-component>
-  <app-current-weather></app-current-weather>
-  <app-forecast-weather></app-forecast-weather>
+  <div *ngIf="this.error; else successResponse">
+    <mat-card>
+      <h1>Error code: {{error?.cod}}</h1>
+      <h3>Message: {{error?.message}}</h3>
+    </mat-card>
+  </div>
+  <ng-template #successResponse>
+    <app-current-weather></app-current-weather>
+    <app-forecast-weather></app-forecast-weather>
+  </ng-template>
 </div>
 

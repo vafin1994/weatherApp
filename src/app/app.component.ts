@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FavoriteCitiesService} from "./favorite-cities.service";
+import {FetchWeatherService} from "./fetch-weather.service";
+import {ErrorResponse} from "./ErrorResponse";
 
 @Component({
   selector: 'app-root',
@@ -7,15 +9,20 @@ import {FavoriteCitiesService} from "./favorite-cities.service";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private FavoriteCitiesService: FavoriteCitiesService) {
+  constructor(private FavoriteCitiesService: FavoriteCitiesService, private FetchWeatherService: FetchWeatherService) {
   }
+
   title = 'weatherApp';
 
-  EmitClickOnCity(name: string){
+  EmitClickOnCity(name: string) {
     this.FavoriteCitiesService.FavoriteCitySelected(name);
   }
 
-  get ListOfFavoriteCities(): string[]{
+  get ListOfFavoriteCities(): string[] {
     return this.FavoriteCitiesService.listOfFavoriteCities;
+  }
+
+  get error(): ErrorResponse | null {
+    return this.FetchWeatherService.error;
   }
 }
