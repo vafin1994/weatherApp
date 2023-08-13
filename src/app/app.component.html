@@ -1,3 +1,15 @@
-<app-city-input-component></app-city-input-component>
-<app-current-weather></app-current-weather>
-<app-forecast-weather></app-forecast-weather>
+<mat-toolbar>
+  Weather App
+  <button mat-button [matMenuTriggerFor]="menu">
+    <mat-icon style="margin-right: 0.5rem">favorite</mat-icon>Saved Cities</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>Item 1</button>
+    <button mat-menu-item>Item 2</button>
+  </mat-menu>
+</mat-toolbar>
+<div class="app-wrapper">
+  <app-city-input-component></app-city-input-component>
+  <app-current-weather></app-current-weather>
+  <app-forecast-weather></app-forecast-weather>
+</div>
+

@@ -1,5 +1,9 @@
 <form (ngSubmit)="onSubmit(form)" #form="ngForm">
-  <label for="cityName">Enter city name:</label>
-  <input id="cityName" type="text" ngModel name="cityName" required>
-  <button [disabled]="!form.valid" type="submit">Get Weather</button>
+  <mat-form-field>
+    <mat-label>Enter city name:</mat-label>
+    <input matInput id="cityName" type="text" ngModel name="cityName" required>
+  </mat-form-field>
+  <div style="display: flex; justify-content: center">
+    <button mat-raised-button color="primary" [disabled]="!form.valid" type="submit">Get Weather</button>
+  </div>
 </form>

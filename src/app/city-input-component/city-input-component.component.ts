@@ -16,7 +16,7 @@ export class CityInputComponentComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     const cityName = form.value.cityName
-    this.FetchWeatherService.FetchCurrentWeather(cityName);
+    this.FetchWeatherService.FetchWeatherData(cityName);
   }
 
 }

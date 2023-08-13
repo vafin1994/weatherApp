@@ -1,1 +1,6 @@
-<p>forecast-weather works!</p>
+<mat-card class="forecast-wrapper" *ngIf="weatherForecast">
+  <div *ngFor="let item of weatherForecast.list">
+    <app-weather-card maxWidth="250px" [weather]="item"></app-weather-card>
+  </div>
+</mat-card>
+

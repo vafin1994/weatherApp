@@ -1,1 +1,12 @@
-<p>current-weather works!</p>
+<div *ngIf="weather">
+  <div style="display: flex; align-items: baseline; gap: 0.5rem">
+    <span>{{weather.name}}, {{weather.sys.country}}</span>
+    <div>
+      <button matTooltip="Add city to favorite cities" mat-icon-button color="accent">
+        <mat-icon>favorite</mat-icon>
+      </button>
+    </div>
+  </div>
+  <app-weather-card [weather]="weather"></app-weather-card>
+</div>
+

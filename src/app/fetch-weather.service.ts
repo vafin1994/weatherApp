@@ -1,12 +1,15 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {WeatherResponse} from "./WeatherResponse";
-import {catchError} from "rxjs";
+import {catchError, Subject} from "rxjs";
+import {ForecastResponse} from "./ForecastResponse";
+import {ErrorResponse} from "./ErrorResponse";
 
 class WeatherParams {
   urlBase: string = 'https://api.openweathermap.org/data/2.5/';
   cityName: string;
   mode: 'weather' | 'forecast';
+  units: 'standard' | 'metric' | 'imperial' = "metric";
   apiKey: string;
 
   constructor(cityName: string, mode: 'weather' | 'forecast', apiKey: string) {
@@ -15,7 +18,7 @@ class WeatherParams {
     this.apiKey = apiKey;
   }
 
-  get URL(): string{
+  get URL(): string {
     return this.urlBase + '/' + this.mode;
   }
 
@@ -26,34 +29,53 @@ class WeatherParams {
 })
 export class FetchWeatherService {
 
+  currentWeatherSubject$: Subject<WeatherResponse> = new Subject<WeatherResponse>();
+  currentWeatherErrorSubject$: Subject<ErrorResponse> = new Subject<ErrorResponse>();
+
+  forecastWeatherSubject$: Subject<ForecastResponse> = new Subject<ForecastResponse>();
+  forecastWeatherErrorSubject$: Subject<ErrorResponse> = new Subject<ErrorResponse>();
+
   constructor(private http: HttpClient) {
   }
 
-  FetchCurrentWeather(cityName: string) {
+  FetchWeatherData(cityName: string) {
+    this.FetchCurrentWeather(cityName);
+    this.FetchForecast(cityName);
+  }
+
+  private FetchCurrentWeather(cityName: string) {
     const weatherParams: WeatherParams = new WeatherParams(cityName, 'weather', this.GetApiKey());
     this.http.get<WeatherResponse>(weatherParams.URL, {
-      params: {q: weatherParams.cityName, appid: weatherParams.apiKey}
+      params: {
+        q: weatherParams.cityName,
+        appid: weatherParams.apiKey,
+        units: weatherParams.units
+      }
     }).pipe(
-      catchError((error: any) => {
-        console.log('Error$$$:', error);
+      catchError((error: ErrorResponse) => {
+        this.currentWeatherSubject$.error(error)
         throw error;
       })
     ).subscribe((response: WeatherResponse) => {
-      console.log(response);
+      this.currentWeatherSubject$.next(response);
     })
   }
 
-  FetchForecast(cityName: string){
+  private FetchForecast(cityName: string) {
     const weatherParams: WeatherParams = new WeatherParams(cityName, 'forecast', this.GetApiKey());
-    this.http.get(weatherParams.URL, {
-      params: {q: weatherParams.cityName, appid: weatherParams.apiKey}
+    this.http.get<ForecastResponse>(weatherParams.URL, {
+      params: {
+        q: weatherParams.cityName,
+        appid: weatherParams.apiKey,
+        units: weatherParams.units
+      }
     }).pipe(
-      catchError((error: any) => {
-        console.log('Error$$$:', error);
+      catchError((error: ErrorResponse) => {
+        this.forecastWeatherErrorSubject$.next(error);
         throw error;
       })
-    ).subscribe((response: any) => {
-      console.log(response)
+    ).subscribe((response: ForecastResponse) => {
+      this.forecastWeatherSubject$.next(response);
     })
   }
 
