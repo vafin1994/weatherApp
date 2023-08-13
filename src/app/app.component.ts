@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {FavoriteCitiesService} from "./favorite-cities.service";
-import {FetchWeatherService} from "./fetch-weather.service";
+import {FavoriteCitiesService} from "./services/favorite-cities.service";
+import {FetchWeatherService} from "./services/fetch-weather.service";
 import {ErrorResponse} from "./ErrorResponse";
 
 @Component({

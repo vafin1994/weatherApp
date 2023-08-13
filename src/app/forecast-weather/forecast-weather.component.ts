@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FetchWeatherService} from "../fetch-weather.service";
+import {FetchWeatherService} from "../services/fetch-weather.service";
 import {ForecastResponse} from "../ForecastResponse";
 import {Subscription} from "rxjs";
 

@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {WeatherResponse} from "./WeatherResponse";
+import {WeatherResponse} from "../WeatherResponse";
 import {catchError, combineLatest, Subject} from "rxjs";
-import {ForecastResponse} from "./ForecastResponse";
-import {ErrorResponse} from "./ErrorResponse";
+import {ForecastResponse} from "../ForecastResponse";
+import {ErrorResponse} from "../ErrorResponse";
 import {CacheData, CacheService} from "./cache.service";
 
 class WeatherParams {

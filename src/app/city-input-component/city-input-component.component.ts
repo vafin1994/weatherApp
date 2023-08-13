@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FetchWeatherService} from "../fetch-weather.service";
+import {FetchWeatherService} from "../services/fetch-weather.service";
 import {NgForm} from "@angular/forms";
-import {FavoriteCitiesService} from "../favorite-cities.service";
+import {FavoriteCitiesService} from "../services/favorite-cities.service";
 import {Subscription} from "rxjs";
 
 @Component({

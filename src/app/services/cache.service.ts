@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {ForecastResponse} from "./ForecastResponse";
-import {WeatherResponse} from "./WeatherResponse";
+import {ForecastResponse} from "../ForecastResponse";
+import {WeatherResponse} from "../WeatherResponse";
 
 export interface CacheData {
   weatherResponse: WeatherResponse,
