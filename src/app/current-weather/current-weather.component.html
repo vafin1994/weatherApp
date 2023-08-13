@@ -1,8 +1,9 @@
 <div *ngIf="weather">
-  <div style="display: flex; align-items: baseline; gap: 0.5rem">
+  <div style="display: flex; align-items: center; gap: 0.5rem; height:50px">
     <span>{{weather.name}}, {{weather.sys.country}}</span>
     <div>
-      <button matTooltip="Add city to favorite cities" mat-icon-button color="accent">
+      <button *ngIf="!CheckIsCityAlreadyInFavoriteList(weather.name)" (click)="AddCityToCityList(weather.name)"
+              matTooltip="Add city to favorite cities" mat-icon-button color="accent">
         <mat-icon>favorite</mat-icon>
       </button>
     </div>
